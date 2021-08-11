@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Consultants.ConsultantProfile"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/imageView_ProfilePic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/consultant" />
+
+
+    <TextView
+        android:id="@+id/Profile_textView_Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Mr Doctor" />
+
+    <TextView
+        android:id="@+id/Profile_textView_Speciality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Best your Money can buy" />
+
+    <Button
+        android:id="@+id/Profile_button_GoToChat"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="CHAT"
+        android:textColor="@color/white"
+        android:background="@color/Spacece_Yellow"/>
+
+
+</LinearLayout>
