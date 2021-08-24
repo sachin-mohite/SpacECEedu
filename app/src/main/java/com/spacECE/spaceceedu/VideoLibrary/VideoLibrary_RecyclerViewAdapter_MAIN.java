@@ -14,11 +14,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class VideoLibrary_RecyclerViewAdapter extends RecyclerView.Adapter<VideoLibrary_RecyclerViewAdapter.MyViewHolder> {
+public class VideoLibrary_RecyclerViewAdapter_MAIN extends RecyclerView.Adapter<VideoLibrary_RecyclerViewAdapter_MAIN.MyViewHolder> {
     ArrayList<Topic> topics= new ArrayList<Topic>();
     private RecyclerViewClickListener listener;
 
-    public VideoLibrary_RecyclerViewAdapter(ArrayList<Topic> topics, RecyclerViewClickListener listener){
+    public VideoLibrary_RecyclerViewAdapter_MAIN(ArrayList<Topic> topics, RecyclerViewClickListener listener){
         this.topics=topics;
         this.listener= listener;
     }
@@ -43,13 +43,13 @@ public class VideoLibrary_RecyclerViewAdapter extends RecyclerView.Adapter<Video
 
     @NonNull
     @Override
-    public VideoLibrary_RecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public VideoLibrary_RecyclerViewAdapter_MAIN.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_list_item,parent,false);
         return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VideoLibrary_RecyclerViewAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull VideoLibrary_RecyclerViewAdapter_MAIN.MyViewHolder holder, int position) {
         String name = topics.get(position).getTitle();
         String v_url = topics.get(position).getV_URL();
         String duration = topics.get(position).getLength();
