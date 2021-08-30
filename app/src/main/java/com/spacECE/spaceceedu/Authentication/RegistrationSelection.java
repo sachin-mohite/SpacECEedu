@@ -1,4 +1,4 @@
-package com.spacECE.spaceceedu;
+package com.spacECE.spaceceedu.Authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.spacECE.spaceceedu.Authentication.UserRegistration;
+import com.spacECE.spaceceedu.R;
 
 public class RegistrationSelection extends AppCompatActivity {
 
