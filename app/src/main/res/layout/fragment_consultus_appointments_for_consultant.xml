@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Consultants.Fragment_Consultants_Consultants_appointments"
+    tools:context=".Consultants.Fragment_Appointments_For_Consultants"
     android:background="@color/Spacece_Yelloww">
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/Consultants_Consultants_Appointments_RecyclerView"
+        android:id="@+id/Appointments_For_Consultant_RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="1dp"
@@ -18,15 +19,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/consultants_consultants_appointments_list_item"/>
-    <TextView
-        android:id="@+id/Abhikant"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:text="Developed by Abhikant Awasthi"
-        android:gravity="center"
-        android:textSize="16dp"
-        android:layout_gravity="bottom" />
+        tools:listitem="@layout/consultus_appointments_list_item"/>
 
 </FrameLayout>

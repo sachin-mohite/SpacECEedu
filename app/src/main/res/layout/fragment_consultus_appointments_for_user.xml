@@ -21,7 +21,7 @@
      android:layout_height="wrap_content"
     android:orientation="vertical">
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/Consultants_MyConsultants_RecyclerView"
+        android:id="@+id/Appointments_For_Users_RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="1dp"
@@ -33,7 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_weight="1"
-        tools:listitem="@layout/consultants_consultants_appointments_list_item"/>
+        tools:listitem="@layout/consultus_appointments_list_item"/>
 
 
  </LinearLayout>
