@@ -1,4 +1,4 @@
-package com.spacECE.spaceceedu.Consultants;
+package com.spacECE.spaceceedu.ConsultUS;
 
 public class Consultant {
     private String name,consultant_id,profilePic_src,categories,address,language,timing_start,timing_end,qualification;

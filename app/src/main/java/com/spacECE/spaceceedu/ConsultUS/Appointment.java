@@ -1,4 +1,4 @@
-package com.spacECE.spaceceedu.Consultants;
+package com.spacECE.spaceceedu.ConsultUS;
 
 public class Appointment {
     private String consult_id;

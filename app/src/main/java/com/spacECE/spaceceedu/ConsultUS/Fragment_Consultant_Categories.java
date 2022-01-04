@@ -1,4 +1,4 @@
-package com.spacECE.spaceceedu.Consultants;
+package com.spacECE.spaceceedu.ConsultUS;
 
 import android.content.Intent;
 import android.os.Bundle;

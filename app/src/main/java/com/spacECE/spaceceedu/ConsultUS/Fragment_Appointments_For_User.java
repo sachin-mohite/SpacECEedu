@@ -1,6 +1,5 @@
-package com.spacECE.spaceceedu.Consultants;
+package com.spacECE.spaceceedu.ConsultUS;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,8 +17,6 @@ import com.spacECE.spaceceedu.MainActivity;
 import com.spacECE.spaceceedu.R;
 
 import java.util.ArrayList;
-
-import static com.spacECE.spaceceedu.Consultants.ConsultantsLibrary.consultantsList;
 
 public class Fragment_Appointments_For_User extends Fragment {
 

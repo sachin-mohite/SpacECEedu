@@ -1,4 +1,4 @@
-package com.spacECE.spaceceedu.Library;
+package com.spacECE.spaceceedu.LibForSmall;
 
 import android.os.Bundle;
 import android.util.Log;

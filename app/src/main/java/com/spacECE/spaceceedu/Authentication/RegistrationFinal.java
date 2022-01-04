@@ -32,19 +32,19 @@ import java.io.FileDescriptor;
 import java.io.IOException;
 import java.text.ParseException;
 
-public class ConsultantRegistrationFinal extends AppCompatActivity {
+public class RegistrationFinal extends AppCompatActivity {
 
     private Button b_register;
     private ImageView iv_profile_pic;
-    private EditText ev_email,ev_phoneNo,ev_password,ev_repassword,ev_name;
-    private boolean consultant=false;
+    private EditText ev_email,ev_phoneNo,ev_password, ev_re_password,ev_name;
+    private boolean imageUpload=false;
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
     private Uri picData= Uri.parse(String.valueOf(R.drawable.default_profilepic));
     Toolbar toolbar;
     UserLocalStore userLocalStore;
 
-    String TYPE, LANGUAGE, ADDRESS, FEE,
+    String TYPE = "customer", LANGUAGE, ADDRESS, FEE,
             QUALIFICATION, START_TIME, END_TIME;
 
     @Override
@@ -59,7 +59,7 @@ public class ConsultantRegistrationFinal extends AppCompatActivity {
 
         ev_email=findViewById(R.id.UserRegistration_editTextText_Email);
         ev_password=findViewById(R.id.UserRegistration_editTextText_Password);
-        ev_repassword=findViewById(R.id.UserRegistration_editTextText_Repassword);
+        ev_re_password =findViewById(R.id.UserRegistration_editTextText_Repassword);
         ev_name=findViewById(R.id.UserRegistration_editTextText_Name);
         ev_phoneNo=findViewById(R.id.UserRegistration_editTextText_PhoneNumber);
         toolbar =  findViewById(R.id.UserRegistration_toolbar);
@@ -115,7 +115,7 @@ public class ConsultantRegistrationFinal extends AppCompatActivity {
 
                 if (validateData()) {
                     try {
-                        if(validTime(START_TIME, END_TIME)){
+                        if(validTime(START_TIME, END_TIME)) {
                             sendUserRegistration( ev_name.getText().toString(), ev_email.getText().toString(),
                                     ev_password.getText().toString(), ev_phoneNo.getText().toString(), picData);
                         } else {
@@ -165,13 +165,18 @@ public class ConsultantRegistrationFinal extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             //set image to image view
+            b_register.setText("Register / SignUp");
             picData= data.getData();
             iv_profile_pic.setImageURI(data.getData());
         }
     }
 
     private boolean validTime(String fromTime, String endTime) throws ParseException {
-        return UsefulFunctions.DateFunc.StringToTime(fromTime).before(UsefulFunctions.DateFunc.StringToTime(endTime));
+        if(fromTime == null & endTime == null) {
+            return true;
+        } else {
+            return UsefulFunctions.DateFunc.StringToTime(fromTime+":00").before(UsefulFunctions.DateFunc.StringToTime(endTime+":00"));
+        }
     }
 
     private Bitmap getBitmapFromUri(Uri uri) throws IOException {
@@ -198,7 +203,8 @@ public class ConsultantRegistrationFinal extends AppCompatActivity {
 
             JSONObject jsonObject;
             Bitmap selectedImage;
-            byte[] encodedImage ;
+            byte[] encodedImage = {5};
+
 
             @Override
             public void run() {
@@ -210,26 +216,61 @@ public class ConsultantRegistrationFinal extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                if(encodedImage.length == 1){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(!imageUpload){
+                                Toast.makeText(getApplicationContext(), "Upload Image", Toast.LENGTH_SHORT).show();
+                                b_register.setText("Continue without Image!");
+                                imageUpload = true;
+                            }
+                        }
+                    });
+                    if(!imageUpload){
+                        return;
+                    }
+
+                }
+
+                System.out.println("hello");
+
                 OkHttpClient client = new OkHttpClient();
-                RequestBody fromBody = new MultipartBody.Builder()
-                        .setType(MultipartBody.FORM)
-                        .addFormDataPart("name", name)
-                        .addFormDataPart("email", email)
-                        .addFormDataPart("password", password)
-                        .addFormDataPart("phone", phone)
-                        .addFormDataPart("image", name+".jpg",
-                                RequestBody.create(MediaType.parse("image/*jpg"), encodedImage))
-                        .addFormDataPart("type", "consultant")
-                        .addFormDataPart("c_categories", TYPE)
-                        .addFormDataPart("c_office", ADDRESS)
-                        .addFormDataPart("c_from_time", START_TIME)
-                        .addFormDataPart("c_to_time", END_TIME)
-                        .addFormDataPart("c_language", LANGUAGE)
-                        .addFormDataPart("c_fee", FEE)
-                        .addFormDataPart("c_available_from", "Monday")
-                        .addFormDataPart("c_available_to", "Tuesday")
-                        .addFormDataPart("c_qualification", QUALIFICATION)
-                        .build();
+                RequestBody fromBody;
+
+                if(TYPE != null & LANGUAGE != null & ADDRESS != null & FEE != null
+                        & QUALIFICATION != null & START_TIME != null & END_TIME != null) {
+                    fromBody = new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM)
+                            .addFormDataPart("name", name)
+                            .addFormDataPart("email", email)
+                            .addFormDataPart("password", password)
+                            .addFormDataPart("phone", phone)
+                            .addFormDataPart("image", name+".jpg",
+                                    RequestBody.create(MediaType.parse("image/*jpg"), encodedImage))
+                            .addFormDataPart("type", "consultant")
+                            .addFormDataPart("c_categories", TYPE)
+                            .addFormDataPart("c_office", ADDRESS)
+                            .addFormDataPart("c_from_time", START_TIME)
+                            .addFormDataPart("c_to_time", END_TIME)
+                            .addFormDataPart("c_language", LANGUAGE)
+                            .addFormDataPart("c_fee", FEE)
+                            .addFormDataPart("c_available_from", "Monday")
+                            .addFormDataPart("c_available_to", "Tuesday")
+                            .addFormDataPart("c_qualification", QUALIFICATION)
+                            .build();
+                } else {
+                    fromBody = new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM)
+                            .addFormDataPart("name", name)
+                            .addFormDataPart("email", email)
+                            .addFormDataPart("password", password)
+                            .addFormDataPart("phone", phone)
+                            .addFormDataPart("image", name+".jpg",
+                                    RequestBody.create(MediaType.parse("image/*jpg"), encodedImage))
+                            .addFormDataPart("type", "customer")
+                            .build();
+                }
 
                 Request request = new Request.Builder()
                         .url(register)
@@ -332,8 +373,8 @@ public class ConsultantRegistrationFinal extends AppCompatActivity {
     }
 
     private boolean validatePass(){
-        if(ev_repassword.getText().toString().isEmpty()){
-            ev_repassword.setError("Field cannot be empty");
+        if(ev_re_password.getText().toString().isEmpty()){
+            ev_re_password.setError("Field cannot be empty");
             return false;
         }else{
             return true;
@@ -341,9 +382,9 @@ public class ConsultantRegistrationFinal extends AppCompatActivity {
     }
 
     private boolean validateRepass(){
-        if(!(ev_password.getText().toString().equals(ev_repassword.getText().toString()))){
-            ev_repassword.setError("Reentered Password does not match");
-            ev_repassword.setText("");
+        if(!(ev_password.getText().toString().equals(ev_re_password.getText().toString()))){
+            ev_re_password.setError("Reentered Password does not match");
+            ev_re_password.setText("");
             ev_password.setText("");
             return false;
         }else if(ev_password.getText().toString().isEmpty()){

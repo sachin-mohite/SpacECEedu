@@ -1,4 +1,4 @@
-package com.spacECE.spaceceedu.Consultants;
+package com.spacECE.spaceceedu.ConsultUS;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,10 +10,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.spacECE.spaceceedu.Authentication.LoginActivity;
 import com.spacECE.spaceceedu.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import static com.spacECE.spaceceedu.MainActivity.ACCOUNT;
 
 public class ConsultantProfile extends AppCompatActivity {
 
@@ -92,17 +93,27 @@ public class ConsultantProfile extends AppCompatActivity {
         String finalTiming_from = timing_from;
         String finalTiming_to = timing_to;
 
+        if(ACCOUNT==null) {
+            b_appointment.setText("Login to Book!");
+        }
+
         b_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Consultant_GetAppointment.class);
-                intent.putExtra("profile_pic", finalPic_src);
-                intent.putExtra("consultant_id", finalConsultant_id);
-                intent.putExtra("consultant_name", finalName);
-                intent.putExtra("speciality", finalSpeciality);
-                intent.putExtra("fee", finalFee);
-                intent.putExtra("startTime", finalTiming_from);
-                intent.putExtra("endTime", finalTiming_to);
+
+                Intent intent;
+                if(ACCOUNT==null) {
+                    intent = new Intent(getApplicationContext(), LoginActivity.class);
+                } else {
+                    intent = new Intent(getApplicationContext(), Consultant_GetAppointment.class);
+                    intent.putExtra("profile_pic", finalPic_src);
+                    intent.putExtra("consultant_id", finalConsultant_id);
+                    intent.putExtra("consultant_name", finalName);
+                    intent.putExtra("speciality", finalSpeciality);
+                    intent.putExtra("fee", finalFee);
+                    intent.putExtra("startTime", finalTiming_from);
+                    intent.putExtra("endTime", finalTiming_to);
+                }
                 startActivity(intent);
             }
         });

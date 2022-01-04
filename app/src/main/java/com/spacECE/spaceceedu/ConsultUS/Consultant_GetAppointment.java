@@ -1,4 +1,4 @@
-package com.spacECE.spaceceedu.Consultants;
+package com.spacECE.spaceceedu.ConsultUS;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;

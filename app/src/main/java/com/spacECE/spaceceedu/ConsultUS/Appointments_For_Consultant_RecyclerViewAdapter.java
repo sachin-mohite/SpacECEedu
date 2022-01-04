@@ -1,4 +1,4 @@
-package com.spacECE.spaceceedu.Consultants;
+package com.spacECE.spaceceedu.ConsultUS;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static com.spacECE.spaceceedu.Consultants.Consultant_Main.SetDateTimeDay;
+import static com.spacECE.spaceceedu.ConsultUS.Consultant_Main.SetDateTimeDay;
 
 public class Appointments_For_Consultant_RecyclerViewAdapter extends RecyclerView.Adapter<Appointments_For_Consultant_RecyclerViewAdapter.MyViewHolder> {
 

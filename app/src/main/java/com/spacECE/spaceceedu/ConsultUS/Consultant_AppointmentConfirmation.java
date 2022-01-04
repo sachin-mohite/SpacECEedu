@@ -1,9 +1,6 @@
-package com.spacECE.spaceceedu.Consultants;
+package com.spacECE.spaceceedu.ConsultUS;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,12 +10,6 @@ import android.os.Bundle;
 
 import com.spacECE.spaceceedu.MainActivity;
 import com.spacECE.spaceceedu.R;
-import com.spacECE.spaceceedu.Utils.Notification;
-import com.spacECE.spaceceedu.Utils.UsefulFunctions;
-
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
 
 public class Consultant_AppointmentConfirmation extends AppCompatActivity {
 
