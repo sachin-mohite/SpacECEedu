@@ -1,13 +1,13 @@
 package com.spacECE.spaceceedu.ConsultUS;
 
 public class Consultant {
-    private String name,consultant_id,profilePic_src,categories,address,language,timing_start,timing_end,qualification;
+    private String name,consultant_id,profilePic_src,categories,address,language,timing_start,timing_end,available_days,qualification;
     private String price;
 
     //TODO in this class days on which consultant is available is missing and needs to implemented from the server side and proper string array to be added.
 
     public Consultant(String name, String consultant_id, String profilePic_src, String categories
-            , String address, String language, String timing_start, String timing_end,
+            , String address, String language, String timing_start, String timing_end, String available_days,
                       String qualification, String price) {
         this.name = name;
         this.consultant_id = consultant_id;
@@ -17,6 +17,7 @@ public class Consultant {
         this.language = language;
         this.timing_start = timing_start;
         this.timing_end = timing_end;
+        this.available_days = available_days;
         this.qualification = qualification;
         this.price = price;
     }
@@ -57,7 +58,12 @@ public class Consultant {
         return timing_end;
     }
 
+    public String getAvailable_days() {
+        return available_days;
+    }
+
     public String getPrice() {
         return price;
     }
+
 }

@@ -47,6 +47,10 @@ public class UsefulFunctions {
           return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
       }
 
+      public static Date String1ToDate(String date) throws ParseException {
+          return new SimpleDateFormat("MMM dd, yyyy").parse(date);
+      }
+
       public static Date StringToTime(String date) throws ParseException {
           return new SimpleDateFormat("HH:mm:ss").parse(date);
       }

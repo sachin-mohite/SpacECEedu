@@ -185,11 +185,10 @@ public class RegistrationFinal extends AppCompatActivity {
         return image;
     }
 
-    public static byte[] encodeBase64(Bitmap image) {
+    public static byte[] compressBitmap(Bitmap image) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
-        byte[] encoded = byteArrayOutputStream.toByteArray();
-        return encoded;
+        return byteArrayOutputStream.toByteArray();
     }
 
     private void sendUserRegistration(String name, String email, String password, String phone, Uri image){
@@ -200,7 +199,7 @@ public class RegistrationFinal extends AppCompatActivity {
 
             JSONObject jsonObject;
             Bitmap selectedImage;
-            byte[] encodedImage = {5};
+            byte[] ImageBytes = {5};
 
 
             @Override
@@ -208,12 +207,12 @@ public class RegistrationFinal extends AppCompatActivity {
 
                 try {
                     selectedImage = getBitmapFromUri(image);
-                    encodedImage = encodeBase64(selectedImage);
+                    ImageBytes = compressBitmap(selectedImage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                if(encodedImage.length == 1){
+                if(ImageBytes.length == 1){
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -230,8 +229,6 @@ public class RegistrationFinal extends AppCompatActivity {
 
                 }
 
-                System.out.println("hello");
-
                 OkHttpClient client = new OkHttpClient();
                 RequestBody fromBody;
 
@@ -243,8 +240,8 @@ public class RegistrationFinal extends AppCompatActivity {
                             .addFormDataPart("email", email)
                             .addFormDataPart("password", password)
                             .addFormDataPart("phone", phone)
-                            .addFormDataPart("image", name+".jpg",
-                                    RequestBody.create(MediaType.parse("image/*jpg"), encodedImage))
+                            .addFormDataPart("image", name+".jpeg",
+                                    RequestBody.create(ImageBytes, MediaType.parse("image/*jpeg")))
                             .addFormDataPart("type", "consultant")
                             .addFormDataPart("c_categories", TYPE)
                             .addFormDataPart("c_office", ADDRESS)
@@ -263,8 +260,8 @@ public class RegistrationFinal extends AppCompatActivity {
                             .addFormDataPart("email", email)
                             .addFormDataPart("password", password)
                             .addFormDataPart("phone", phone)
-                            .addFormDataPart("image", name+".jpg",
-                                    RequestBody.create(MediaType.parse("image/*jpg"), encodedImage))
+                            .addFormDataPart("image", name+".jpeg",
+                                    RequestBody.create(ImageBytes, MediaType.parse("image/*jpeg")))
                             .addFormDataPart("type", "customer")
                             .build();
                 }

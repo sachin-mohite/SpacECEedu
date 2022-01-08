@@ -22,10 +22,24 @@ public class ConsultantProfile extends AppCompatActivity {
     ImageView iv_profilePic;
     private TextView tv_name,tv_speciality,tv_chambers,tv_charges,tv_timing,tv_language,tv_days,tv_qualification;
 
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if(ACCOUNT!=null) {
+            b_appointment.setText("Book Appointment!");
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consultant_profile);
+
+
+        if(ACCOUNT==null) {
+            b_appointment.setText("Login to Book!");
+        }
 
         tv_name = findViewById(R.id.Consultant_Profile_textView_Name);
         iv_profilePic = findViewById(R.id.Consultant_Profile_ImageView_ProfilePic);
@@ -46,8 +60,7 @@ public class ConsultantProfile extends AppCompatActivity {
         String fee="Free";
         String qualification="None";
         String language="All";
-        String days_from="Any";
-        String days_to="Any";
+        String available_days="";
         String timing_to="All";
         String timing_from="All";
         String pic_src = "https://img.favpng.com/11/24/17/management-consulting-consulting-firm-consultant-business-png-favpng-jkyKzuQ3UyL0wXXCBcvk4c1fu.jpg";
@@ -64,6 +77,7 @@ public class ConsultantProfile extends AppCompatActivity {
             speciality = extras.getString("speciality");
             timing_from=extras.getString("timing_from");
             timing_to=extras.getString("timing_to");
+            available_days=extras.getString("available_days");
             qualification=extras.getString("qualification");
             pic_src = extras.getString("profile_pic");
         }
@@ -76,7 +90,7 @@ public class ConsultantProfile extends AppCompatActivity {
         tv_charges.setText(fee+" /-");
         tv_timing.setText(timing_from.substring(0,5)+" - "+timing_to.substring(0,5));
         tv_language.setText(language);
-        tv_days.setText(String.valueOf(days_from.charAt(0))+days_from.charAt(1)+days_from.charAt(2)+" - "+days_to.charAt(0)+days_to.charAt(1)+days_to.charAt(2));
+        tv_days.setText(available_days);
 
         try {
             pic_src = "https://spacefoundation.in/test/SpacECE-PHP/img/users/" + pic_src;
@@ -90,12 +104,9 @@ public class ConsultantProfile extends AppCompatActivity {
         String finalName = name;
         String finalFee = fee;
         String finalSpeciality = speciality;
+        String finalAvailable_days = available_days;
         String finalTiming_from = timing_from;
         String finalTiming_to = timing_to;
-
-        if(ACCOUNT==null) {
-            b_appointment.setText("Login to Book!");
-        }
 
         b_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +122,7 @@ public class ConsultantProfile extends AppCompatActivity {
                     intent.putExtra("consultant_name", finalName);
                     intent.putExtra("speciality", finalSpeciality);
                     intent.putExtra("fee", finalFee);
+                    intent.putExtra("available_days", finalAvailable_days);
                     intent.putExtra("startTime", finalTiming_from);
                     intent.putExtra("endTime", finalTiming_to);
                 }

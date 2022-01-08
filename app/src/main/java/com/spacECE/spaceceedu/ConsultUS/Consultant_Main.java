@@ -2,6 +2,7 @@ package com.spacECE.spaceceedu.ConsultUS;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Consultant_Main extends AppCompatActivity {
+
+
 
     public static ArrayList<ConsultantCategory> categoryList = new ArrayList<>();
     NavigationBarView.OnItemSelectedListener navListener =
@@ -67,16 +70,16 @@ public class Consultant_Main extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(navListener);
 
         //generated the list based on user type and expanded the fragments accordingly
-        if(MainActivity.ACCOUNT!=null){
+        if(MainActivity.ACCOUNT!=null) {
             if (MainActivity.ACCOUNT.isCONSULTANT()) {
                 bottomNav.inflateMenu(R.menu.consultant_main_consultants_bottomnav);
-                generateAppointmentsListForUser();
-                generateAppointmentsListForConsultant();
+                generateAppointmentsListForUser(getApplicationContext());
+                generateAppointmentsListForConsultant(getApplicationContext());
             } else {
                 bottomNav.inflateMenu(R.menu.consultant_main_user_bottomnav);
-                generateAppointmentsListForUser();
+                generateAppointmentsListForUser(getApplicationContext());
             }
-        }else{
+        }else {
             bottomNav.inflateMenu(R.menu.consultant_main_nouser_bottomnav);
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.ConsultantMain_Frame,
@@ -87,7 +90,7 @@ public class Consultant_Main extends AppCompatActivity {
                 new Fragment_Consultant_Categories()).commit();
     }
 
-    private void generateAppointmentsListForUser() {
+    public static void generateAppointmentsListForUser(Context context) {
 
         new Thread(new Runnable() {
 
@@ -132,30 +135,7 @@ public class Consultant_Main extends AppCompatActivity {
                                 try {
                                     for (int i = 0; i < jsonArray.length(); i++) {
 
-                                        JSONObject response_element = new JSONObject(String.valueOf(jsonArray.getJSONObject(i)));
-
-                                        Appointment newAppointment = new Appointment(response_element.getString("c_id"), response_element.getString("c_name"), response_element.getString("u_name")
-                                                , response_element.getString("c_image"), response_element.getString("u_image"), response_element.getString("b_time")
-                                                , response_element.getString("end_time"));
-
-
-                                        Intent intent = new Intent(Consultant_Main.this, Notification.class);
-                                        PendingIntent pendingIntent = PendingIntent.getBroadcast(Consultant_Main.this,
-                                                Integer.parseInt(response_element.getString("booking_id")), intent, 0);
-                                        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                                        Date date = new Date();
-                                        Calendar calendar = Calendar.getInstance();
-                                        try {
-                                            date = UsefulFunctions.DateFunc.StringToDate(response_element.getString("b_time"));
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
-                                        }
-                                        calendar.setTime(date);
-                                        Log.d("Notification", "sendNotification: "+calendar.getTime());
-                                        alarmManager.set(AlarmManager.RTC_WAKEUP,
-                                                calendar.getTimeInMillis()-1000*60*10, pendingIntent);
-
-                                        Fragment_Appointments_For_User.appointmentsArrayList.add(newAppointment);
+                                        Fragment_Appointments_For_User.appointmentsArrayList.add(UpdatingAppointmentAndNotification(i, jsonArray, context));
                                     }
                                     Log.i("Appointments_For_User:::::", Fragment_Appointments_For_User.appointmentsArrayList.toString());
 
@@ -173,7 +153,7 @@ public class Consultant_Main extends AppCompatActivity {
         }).start();
     }
 
-    private void generateAppointmentsListForConsultant() {
+    public static void generateAppointmentsListForConsultant(Context context) {
 
         new Thread(new Runnable() {
 
@@ -219,31 +199,7 @@ public class Consultant_Main extends AppCompatActivity {
                                 try {
                                     for (int i = 0; i < jsonArray.length(); i++) {
 
-                                        JSONObject response_element = new JSONObject(String.valueOf(jsonArray.getJSONObject(i)));
-
-                                        Appointment newAppointment = new Appointment(response_element.getString("c_id"), response_element.getString("c_name"), response_element.getString("u_name")
-                                                , response_element.getString("c_image"), response_element.getString("u_image"), response_element.getString("b_time")
-                                                , response_element.getString("end_time"));
-
-
-                                        Intent intent = new Intent(Consultant_Main.this, Notification.class);
-                                        PendingIntent pendingIntent = PendingIntent.getBroadcast(Consultant_Main.this,
-                                                Integer.parseInt(response_element.getString("booking_id")), intent, 0);
-                                        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                                        Date date = new Date();
-                                        Calendar calendar = Calendar.getInstance();
-                                        try {
-                                            date = UsefulFunctions.DateFunc.StringToDate(response_element.getString("b_time"));
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
-                                        }
-                                        calendar.setTime(date);
-                                        Log.d("Notification", "sendNotification: "+calendar.getTime());
-                                        alarmManager.set(AlarmManager.RTC_WAKEUP,
-                                                calendar.getTimeInMillis()-1000*60*10, pendingIntent);
-
-
-                                        Fragment_Appointments_For_Consultants.appointmentsArrayList.add(newAppointment);
+                                        Fragment_Appointments_For_Consultants.appointmentsArrayList.add(UpdatingAppointmentAndNotification(i, jsonArray, context));
                                     }
                                     Log.i("Appointments_For_Consultant:::::", Fragment_Appointments_For_Consultants.appointmentsArrayList.toString());
 
@@ -259,6 +215,33 @@ public class Consultant_Main extends AppCompatActivity {
                 });
             }
         }).start();
+    }
+
+    private static Appointment UpdatingAppointmentAndNotification(int i, JSONArray jsonArray, Context context) throws JSONException {
+        JSONObject response_element = new JSONObject(String.valueOf(jsonArray.getJSONObject(i)));
+
+        Appointment newAppointment = new Appointment(response_element.getString("c_id"), response_element.getString("c_name"), response_element.getString("u_name")
+                , response_element.getString("c_image"), response_element.getString("u_image"), response_element.getString("b_datetime")
+                , response_element.getString("end_time"));
+
+
+        Intent intent = new Intent(context, Notification.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                Integer.parseInt(response_element.getString("booking_id")), intent, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        try {
+            date = UsefulFunctions.DateFunc.StringToDate(response_element.getString("b_datetime"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        calendar.setTime(date);
+        Log.d("Notification", "sendNotification: "+calendar.getTime());
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis()-1000*60*10, pendingIntent);
+
+        return newAppointment;
     }
 
 

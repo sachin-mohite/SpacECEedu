@@ -56,6 +56,7 @@ public class ConsultantsLibrary extends AppCompatActivity {
                 intent.putExtra("language", consultantsList.get(position).getLanguage());
                 intent.putExtra("timing_to", consultantsList.get(position).getTiming_end());
                 intent.putExtra("timing_from", consultantsList.get(position).getTiming_start());
+                intent.putExtra("available_days", consultantsList.get(position).getAvailable_days());
                 intent.putExtra("qualification", consultantsList.get(position).getQualification());
                 intent.putExtra("profilePic", consultantsList.get(position).getProfilePic_src());
                 startActivity(intent);

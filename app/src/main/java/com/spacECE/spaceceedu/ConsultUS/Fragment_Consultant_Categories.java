@@ -43,6 +43,7 @@ public class Fragment_Consultant_Categories extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View v = inflater.inflate(R.layout.fragment_consultant__categories, container, false);
 
         Log.i("Categories", "Initiated");
@@ -113,8 +114,8 @@ public class Fragment_Consultant_Categories extends Fragment {
                                 response_element.getString("u_id"), response_element.getString("image"),
                                 response_element.getString("cat_name"), response_element.getString("c_office"),
                                 response_element.getString("c_language"), response_element.getString("c_from_time"),
-                                response_element.getString("c_to_time"), response_element.getString("c_qualification"),
-                                response_element.getString("c_fee"));
+                                response_element.getString("c_to_time"), response_element.getString("c_aval_days"),
+                                response_element.getString("c_qualification"), response_element.getString("c_fee"));
 
                         ConsultantsLibrary.consultantsList.add(consultant);
                     }

@@ -1,10 +1,9 @@
 package com.spacECE.spaceceedu.ConsultUS;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
+
 import android.content.Intent;
-import android.icu.util.Calendar;
 import android.os.Build;
+import android.os.Parcel;
 import android.util.Log;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,11 +11,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.timepicker.MaterialTimePicker;
+import com.google.android.material.timepicker.TimeFormat;
 import com.instamojo.android.Instamojo;
 import com.spacECE.spaceceedu.MainActivity;
 import com.spacECE.spaceceedu.R;
 import com.spacECE.spaceceedu.Utils.UsefulFunctions;
 import com.squareup.picasso.Picasso;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.Timepoint;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -24,9 +31,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Date;
+import java.util.*;
 
 import static com.spacECE.spaceceedu.LearnOnApp.LearnOn_List_RecycleAdapter.orderID;
+import static com.spacECE.spaceceedu.Utils.UsefulFunctions.DateFunc.StringToTime;
 import static java.lang.String.*;
 import static java.lang.String.format;
 
@@ -37,6 +45,7 @@ public class Consultant_GetAppointment extends AppCompatActivity implements Inst
     String speciality = "None";
     String fee="Free";
     String pic_src;
+    String available_days="";
     String timing_from= "";
     String timing_to = "";
 
@@ -53,6 +62,7 @@ public class Consultant_GetAppointment extends AppCompatActivity implements Inst
     private Boolean Date_picked = false;
     private Boolean Time_picked = false;
     private String BOOKING_DAY, BOOKING_TIME;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +84,7 @@ public class Consultant_GetAppointment extends AppCompatActivity implements Inst
             consultant_id = extras.getString("consultant_id");
             speciality = extras.getString("speciality");
             pic_src=extras.getString("profile_pic");
+            available_days=extras.getString("available_days");
             timing_from = extras.getString("startTime");
             timing_to = extras.getString("endTime");
 
@@ -157,41 +168,100 @@ public class Consultant_GetAppointment extends AppCompatActivity implements Inst
     private void datePicker(){
         //date picker
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Calendar c = Calendar.getInstance();
-            mYear = c.get(Calendar.YEAR);
-            mMonth = c.get(Calendar.MONTH);
-            mDay = c.get(Calendar.DAY_OF_MONTH);
-            mHour = c.get(Calendar.HOUR_OF_DAY);
-            mMinute = c.get(Calendar.MINUTE);
+//        Calendar[] ddd = AvailableDays();
+//
+//        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+//                new DatePickerDialog.OnDateSetListener() {
+//                    @Override
+//                    public void onDateSet(DatePickerDialog view, int year,int monthOfYear, int dayOfMonth) {
+//                        Date_picked =true; //to mark date is pciked
+//                        date = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year + " ";
+//                        BOOKING_DAY = format("%04d:%02d:%02d ", year, (monthOfYear+1), dayOfMonth);
+//                        calendar.setText(date);
+//
+//                        if(!Time_picked){ //is time is not picked before launch time picker
+//                            timePicker();
+//                        }
+//                        DateAndTimePicked(); //checks if time falls between the consultant range
+//                    }
+//                }, ddd[0].get(Calendar.YEAR), ddd[0].get(Calendar.MONTH), ddd[0].get(Calendar.DATE));
+//
+//        Calendar abc = Calendar.getInstance();
+//        datePickerDialog.setMinDate(abc);
+//        abc.add(Calendar.DATE, 30);
+//        datePickerDialog.setMaxDate(abc);
+//
+////        datePickerDialog.setSelectableDays(ddd);
+//
+//        datePickerDialog.show(getFragmentManager(), "hello1");
+
+
+
+
+
+
+
+
+    }
+
+    private ArrayList<Integer> days(String AvailableDays) {
+        String Days[] = AvailableDays.split(",");
+        ArrayList<Integer> wording = new ArrayList<>();
+
+        for (int i = 0; i < Days.length; i++) {
+            if(Days[i].equals("Monday"))
+                wording.add(2);
+            if(Days[i].equals("Tuesday"))
+                wording.add(3);
+            if(Days[i].equals("Wednesday"))
+                wording.add(4);
+            if(Days[i].equals("Thursday"))
+                wording.add(5);
+            if(Days[i].equals("Friday"))
+                wording.add(6);
+            if(Days[i].equals("Saturday"))
+                wording.add(7);
+            if(Days[i].equals("Sunday"))
+                wording.add(1);
         }
+        return wording;
+    }
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year,int monthOfYear, int dayOfMonth) {
-                        Date_picked =true; //to mark date is pciked
-                        date = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year + " ";
-                        BOOKING_DAY = format("%04d:%02d:%02d ", year, (monthOfYear+1), dayOfMonth);
-                        calendar.setText(date);
+    private Calendar[] AvailableDays() {
 
-                        if(!Time_picked){ //is time is not picked before launch time picker
-                            timePicker();
-                        }
-                        DateAndTimePicked(); //checks if time falls between the consultant range
-                    }
-                }, mYear, mMonth, mDay);
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-        datePickerDialog.show();
+        ArrayList<Date> DaysAvailable = new ArrayList<Date>();
+        ArrayList<Integer> DaysOfWeek = days(available_days);
+        Calendar[] ddd = {};
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Calendar today = Calendar.getInstance();
+            for (int i = 0; i < 30; i++) {
+                if(DaysOfWeek.contains(today.get(Calendar.DAY_OF_WEEK))) {
+                    DaysAvailable.add(today.getTime());
+                }
+                today.add(Calendar.DATE, 1);
+            }
+
+            today = new GregorianCalendar();
+            ddd = new Calendar[DaysAvailable.size()];
+
+            for (int i = 0; i < DaysAvailable.size(); i++) {
+                today.setTime(DaysAvailable.get(i));
+                ddd[i] = today;
+                System.out.println(ddd[i]);
+            }
+            return ddd;
+        }
+        return ddd;
     }
 
     private void timePicker(){
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+        TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(
                 new TimePickerDialog.OnTimeSetListener() {
 
                     @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay,int minute) {
+                    public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
                         Time_picked = true; //same as above
                         mHour = hourOfDay;
                         mMinute = minute;
@@ -199,13 +269,19 @@ public class Consultant_GetAppointment extends AppCompatActivity implements Inst
                         BOOKING_TIME = format("%02d:%02d:00", hourOfDay, minute);
                         clock.setText(time);
 
-                        if(!Date_picked) { //same as above
+                        if (!Date_picked) { //same as above
                             datePicker();
                         }
                         DateAndTimePicked(); //same as above
                     }
                 }, mHour, mMinute, false);
-        timePickerDialog.show();
+
+
+//        timePickerDialog.setSelectableTimes(new Timepoint[]{new Timepoint(15, 26)});
+
+        timePickerDialog.show(getFragmentManager(), "hello");
+
+
     }
 
     @Override
@@ -228,9 +304,9 @@ public class Consultant_GetAppointment extends AppCompatActivity implements Inst
     }
 
     private boolean validTime(String start, String end, String to_check) throws ParseException {
-        Date Start = UsefulFunctions.DateFunc.StringToTime(start);
-        Date End = UsefulFunctions.DateFunc.StringToTime(end);
-        Date To_Check = UsefulFunctions.DateFunc.StringToTime(to_check);
+        Date Start = StringToTime(start);
+        Date End = StringToTime(end);
+        Date To_Check = StringToTime(to_check);
 
         return (To_Check.before(End) & To_Check.after(Start));
 

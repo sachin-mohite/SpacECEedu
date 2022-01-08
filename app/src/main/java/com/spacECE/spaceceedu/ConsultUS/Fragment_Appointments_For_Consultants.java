@@ -31,10 +31,11 @@ public class Fragment_Appointments_For_Consultants extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v= inflater.inflate(R.layout.fragment_consultus_appointments_for_consultant, container, false);
 
+//        Consultant_Main.generateAppointmentsListForConsultant(getContext());
+        View v= inflater.inflate(R.layout.fragment_consultus_appointments_for_consultant,
+                container, false);
         recyclerView=v.findViewById(R.id.Appointments_For_Consultant_RecyclerView);
-
         setAdapter(appointmentsArrayList);
         return v;
     }

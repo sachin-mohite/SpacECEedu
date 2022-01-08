@@ -73,17 +73,7 @@ public class ConsultUs_SplashScreen extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Consultant_Main.categoryList = new ArrayList<>();
-                    try {
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            ConsultantCategory newCategory = new ConsultantCategory((String) jsonArray.get(i), "nice");
-                            Consultant_Main.categoryList.add(newCategory);
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
+                    CreateArrayOfCategories(jsonArray);
 
                     Intent intent = new Intent(ConsultUs_SplashScreen.this, Consultant_Main.class);
                     startActivity(intent);
@@ -98,5 +88,18 @@ public class ConsultUs_SplashScreen extends AppCompatActivity {
 
         thread.start();
 
+    }
+
+    static void CreateArrayOfCategories(JSONArray jsonArray) {
+        Consultant_Main.categoryList = new ArrayList<>();
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                ConsultantCategory newCategory = new ConsultantCategory((String) jsonArray.get(i), "nice");
+                Consultant_Main.categoryList.add(newCategory);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

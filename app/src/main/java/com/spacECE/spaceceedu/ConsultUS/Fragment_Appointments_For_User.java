@@ -34,11 +34,11 @@ public class Fragment_Appointments_For_User extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
+//        Consultant_Main.generateAppointmentsListForUser(getContext());
         View v = inflater.inflate(R.layout.fragment_consultus_appointments_for_user, container, false);
-
         recyclerView = v.findViewById(R.id.Appointments_For_Users_RecyclerView);
-
         if(MainActivity.ACCOUNT!=null){
             TextView tv_l=v.findViewById(R.id.MyC_Login);
             tv_l.setVisibility(View.INVISIBLE);
@@ -48,6 +48,7 @@ public class Fragment_Appointments_For_User extends Fragment {
     }
 
     private void setAdapter(ArrayList<Appointment> list) {
+
         Log.i("SetAdapter:", "Working");
         setOnClickListener();
         Appointments_For_User_RecyclerViewAdapter adapter = new Appointments_For_User_RecyclerViewAdapter(list, listener);
