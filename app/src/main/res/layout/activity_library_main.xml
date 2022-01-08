@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="27dp"
@@ -75,17 +75,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/book_rcl"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+            <FrameLayout
+                android:id="@+id/book_framelayout"
+                android:layout_width="411dp"
+                android:layout_height="461dp"
                 android:layout_marginTop="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/reccomendations"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/reccomendations" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

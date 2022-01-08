@@ -50,7 +50,6 @@ public class Consultant_GetAppointment extends AppCompatActivity implements Inst
     String timing_to = "";
 
     String date, time;
-    int mYear, mMonth, mDay, mHour, mMinute;
 
     private TextView tv_date,tv_time;
     private TextView tv_confirmation,tv_name,tv_speciality,tv_charges;
@@ -142,12 +141,11 @@ public class Consultant_GetAppointment extends AppCompatActivity implements Inst
 
         b_confPay.setOnClickListener(view -> {
             if(Date_picked & Time_picked & Duration>0){
-                //tv_confirmation.setText(BOOKING_DAY+BOOKING_TIME);
                 try {
                     if(validTime(timing_from, timing_to, BOOKING_TIME)){
-                        tv_confirmation.setText("Appointment booked on " + date + time);
-                        Instamojo.getInstance().initialize(this, Instamojo.Environment.TEST);
-                        Instamojo.getInstance().initiatePayment(this, orderID, this);
+                        tv_confirmation.setText("Confirm Appointment on " + date + time);
+//                        Instamojo.getInstance().initialize(this, Instamojo.Environment.TEST);
+//                        Instamojo.getInstance().initiatePayment(this, orderID, this);
                         //now book appointment in on payment success class
                         BookAppointment();
                     } else {
@@ -166,45 +164,36 @@ public class Consultant_GetAppointment extends AppCompatActivity implements Inst
     }
 
     private void datePicker(){
+
         //date picker
+        Calendar[] ddd = AvailableDays(EncodeAvailableDays(available_days));
 
-//        Calendar[] ddd = AvailableDays();
-//
-//        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
-//                new DatePickerDialog.OnDateSetListener() {
-//                    @Override
-//                    public void onDateSet(DatePickerDialog view, int year,int monthOfYear, int dayOfMonth) {
-//                        Date_picked =true; //to mark date is pciked
-//                        date = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year + " ";
-//                        BOOKING_DAY = format("%04d:%02d:%02d ", year, (monthOfYear+1), dayOfMonth);
-//                        calendar.setText(date);
-//
-//                        if(!Time_picked){ //is time is not picked before launch time picker
-//                            timePicker();
-//                        }
-//                        DateAndTimePicked(); //checks if time falls between the consultant range
-//                    }
-//                }, ddd[0].get(Calendar.YEAR), ddd[0].get(Calendar.MONTH), ddd[0].get(Calendar.DATE));
-//
-//        Calendar abc = Calendar.getInstance();
-//        datePickerDialog.setMinDate(abc);
-//        abc.add(Calendar.DATE, 30);
-//        datePickerDialog.setMaxDate(abc);
-//
-////        datePickerDialog.setSelectableDays(ddd);
-//
-//        datePickerDialog.show(getFragmentManager(), "hello1");
+        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePickerDialog view, int year,int monthOfYear, int dayOfMonth) {
+                        Date_picked =true; //to mark date is picked
+                        date = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year + " ";
+                        BOOKING_DAY = format("%04d-%02d-%02d", year, (monthOfYear+1), dayOfMonth);
+                        calendar.setText(date);
 
+                        if(!Time_picked){ //is time is not picked before launch time picker
+                            timePicker();
+                        }
+                        DateAndTimePicked(); //checks if time falls between the consultant range
+                    }
+                }, ddd[0].get(Calendar.YEAR), ddd[0].get(Calendar.MONTH), ddd[0].get(Calendar.DATE));
 
-
-
-
-
-
+        Calendar abc = Calendar.getInstance();
+        datePickerDialog.setMinDate(abc);
+        abc.add(Calendar.DATE, 30);
+        datePickerDialog.setMaxDate(abc);
+        datePickerDialog.setDisabledDays(ddd);
+        datePickerDialog.show(getSupportFragmentManager(), "hello1");
 
     }
 
-    private ArrayList<Integer> days(String AvailableDays) {
+    private ArrayList<Integer> EncodeAvailableDays(String AvailableDays) {
         String Days[] = AvailableDays.split(",");
         ArrayList<Integer> wording = new ArrayList<>();
 
@@ -227,35 +216,41 @@ public class Consultant_GetAppointment extends AppCompatActivity implements Inst
         return wording;
     }
 
-    private Calendar[] AvailableDays() {
+    private Calendar[] AvailableDays(ArrayList<Integer> AvailableDaysEncoded) {
 
-        ArrayList<Date> DaysAvailable = new ArrayList<Date>();
-        ArrayList<Integer> DaysOfWeek = days(available_days);
+        ArrayList<Calendar> DaysAvailable = new ArrayList<>();
         Calendar[] ddd = {};
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Calendar today = Calendar.getInstance();
             for (int i = 0; i < 30; i++) {
-                if(DaysOfWeek.contains(today.get(Calendar.DAY_OF_WEEK))) {
-                    DaysAvailable.add(today.getTime());
+                if(!AvailableDaysEncoded.contains(today.get(Calendar.DAY_OF_WEEK))) {
+                    DaysAvailable.add((Calendar) today.clone());
                 }
                 today.add(Calendar.DATE, 1);
             }
 
-            today = new GregorianCalendar();
             ddd = new Calendar[DaysAvailable.size()];
 
             for (int i = 0; i < DaysAvailable.size(); i++) {
-                today.setTime(DaysAvailable.get(i));
-                ddd[i] = today;
-                System.out.println(ddd[i]);
+                ddd[i] = (Calendar) DaysAvailable.get(i).clone();
             }
             return ddd;
         }
         return ddd;
     }
 
-    private void timePicker(){
+
+
+
+    private void timePicker() {
+
+        Date MinTime = null;
+        try {
+            MinTime = UsefulFunctions.DateFunc.StringToTime(timing_from);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(
                 new TimePickerDialog.OnTimeSetListener() {
@@ -263,8 +258,6 @@ public class Consultant_GetAppointment extends AppCompatActivity implements Inst
                     @Override
                     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
                         Time_picked = true; //same as above
-                        mHour = hourOfDay;
-                        mMinute = minute;
                         time = format("%02d:%02d", hourOfDay, minute);
                         BOOKING_TIME = format("%02d:%02d:00", hourOfDay, minute);
                         clock.setText(time);
@@ -274,12 +267,24 @@ public class Consultant_GetAppointment extends AppCompatActivity implements Inst
                         }
                         DateAndTimePicked(); //same as above
                     }
-                }, mHour, mMinute, false);
+                }, MinTime.getHours(), MinTime.getMinutes(), false);
 
+        try {
 
-//        timePickerDialog.setSelectableTimes(new Timepoint[]{new Timepoint(15, 26)});
+            MinTime = UsefulFunctions.DateFunc.StringToTime(timing_from);
+            Timepoint minTime = new Timepoint(MinTime.getHours(),
+                    MinTime.getMinutes()+1, MinTime.getSeconds());
+            Date MaxTime = UsefulFunctions.DateFunc.StringToTime(timing_to);
+            Timepoint maxTime = new Timepoint(MaxTime.getHours(),
+                    MaxTime.getMinutes()-1, MaxTime.getSeconds());
 
-        timePickerDialog.show(getFragmentManager(), "hello");
+            timePickerDialog.setMinTime(minTime);
+            timePickerDialog.setMaxTime(maxTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        timePickerDialog.show(getSupportFragmentManager(), "hello");
 
 
     }
@@ -328,7 +333,8 @@ public class Consultant_GetAppointment extends AppCompatActivity implements Inst
                 RequestBody fromBody = new FormBody.Builder()
                         .add("u_id", MainActivity.ACCOUNT.getAccount_id())
                         .add("c_id", consultant_id)
-                        .add("b_time", BOOKING_DAY + BOOKING_TIME)
+                        .add("time", BOOKING_TIME)
+                        .add("b_date", BOOKING_DAY)
                         .add("end_time", valueOf(Duration))
                         .build();
 
@@ -340,39 +346,64 @@ public class Consultant_GetAppointment extends AppCompatActivity implements Inst
 
                 Call call = client.newCall(request);
                 call.enqueue(new Callback() {
-                    @Override
-                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                        System.out.println("Registration Error ApI " + e.getMessage());
-                    }
+                     @Override
+                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                         System.out.println("Registration Error ApI " + e.getMessage());
+                     }
 
-                    @Override
-                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                     @Override
+                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    System.out.println(response.body().string());
-                                    jsonObject = new JSONObject(response.body().string());
-                                    System.out.println(jsonObject);
-                                    if(jsonObject.getString("status").equals("success")){
-                                        Toast.makeText(Consultant_GetAppointment.this,"Booking Confirmed",
-                                                Toast.LENGTH_LONG).show();
-                                        startActivity(new Intent(getApplicationContext(), Consultant_AppointmentConfirmation.class));
-                                        finishAffinity();
-                                    } else {
-                                        Toast.makeText(Consultant_GetAppointment.this,"Booking Failed",
-                                                Toast.LENGTH_LONG).show();
-                                    }
-                                } catch (JSONException | IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                    }
+                         String data = response.body().string();
+                         try {
+                             jsonObject = new JSONObject(data);
+                             System.out.println(jsonObject);
+
+                             runOnUiThread(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     try {
+                                         if(jsonObject.getString("status").equals("success")){
+                                             Toast.makeText(Consultant_GetAppointment.this,"Booking Confirmed",
+                                                     Toast.LENGTH_LONG).show();
+
+                                             Intent intent = new Intent(getApplicationContext(), Consultant_AppointmentConfirmation.class);
+                                             intent.putExtra("bookingId", jsonObject.getString("Booking id"));
+                                             intent.putExtra("bookedOn", jsonObject.getString("b_date") +
+                                                     " "+ jsonObject.getString("booking_time"));
+                                             intent.putExtra("time", Duration);
+
+                                             startActivity(intent);
+                                             finishAffinity();
+                                         } else if(jsonObject.getString("status").equals("fail")) {
+                                             Toast.makeText(Consultant_GetAppointment.this,"Booking Failed, Try another time",
+                                                     Toast.LENGTH_LONG).show();
+                                         }
+                                         else {
+                                             Toast.makeText(Consultant_GetAppointment.this,"Booking Failed, Try Later",
+                                                     Toast.LENGTH_LONG).show();
+                                         }
+                                     } catch (JSONException e) {
+                                         e.printStackTrace();
+                                     }
+                                 }
+                             });
+
+                         } catch (JSONException e) {
+                             e.printStackTrace();
+                         }
+
+                     }
                 });
             }
         }).start();
+
+
+
+
+//
+
+
 
     }
 

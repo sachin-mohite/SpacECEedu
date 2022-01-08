@@ -1,6 +1,9 @@
 package com.spacECE.spaceceedu.ConsultUS;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,6 +13,12 @@ import android.os.Bundle;
 
 import com.spacECE.spaceceedu.MainActivity;
 import com.spacECE.spaceceedu.R;
+import com.spacECE.spaceceedu.Utils.Notification;
+import com.spacECE.spaceceedu.Utils.UsefulFunctions;
+
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Consultant_AppointmentConfirmation extends AppCompatActivity {
 
@@ -26,32 +35,31 @@ public class Consultant_AppointmentConfirmation extends AppCompatActivity {
         BookedOn = findViewById(R.id.BookedOn);
         Home = findViewById(R.id.BookingtoHome);
 
+        Intent dataintent = getIntent();
 
-        //TODO display the details of booking api still not working on the server side.
-//        Intent intent = new Intent(Consultant_Main.this, Notification.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(Consultant_Main.this,
-//                Integer.parseInt(response_element.getString("booking_id")), intent, 0);
-//        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-//        Date date = new Date();
-//        Calendar calendar = Calendar.getInstance();
-//        try {
-//            date = UsefulFunctions.DateFunc.StringToDate(response_element.getString("b_time"));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        calendar.setTime(date);
-//        Log.d("Notification", "sendNotification: "+calendar.getTime());
-//        alarmManager.set(AlarmManager.RTC_WAKEUP,
-//                calendar.getTimeInMillis()-1000*60*10, pendingIntent);
+        bookingId = dataintent.getStringExtra("bookingId");
+        bookedOn = dataintent.getStringExtra("bookedOn");
+        duration = String.valueOf(dataintent.getIntExtra("time", 0));
+
+        Intent intent = new Intent(Consultant_AppointmentConfirmation.this, Notification.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(Consultant_AppointmentConfirmation.this,
+                Integer.parseInt(bookingId), intent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        try {
+            date = UsefulFunctions.DateFunc.StringToDate(bookedOn);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        calendar.setTime(date);
+        Log.d("Notification", "sendNotification: "+calendar.getTime());
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis()-1000*60*10, pendingIntent);
 
 
-//        Bundle extra = getIntent().getExtras();
-//        bookingId = extra.getString("bookingId");
-//        bookedOn = extra.getString("bookedOn");
-//        duration = extra.getString("duration");
-//
-//        BookingId.setText("Order ID : "+bookingId);
-//        BookedOn.setText("Booked On "+bookedOn+"for "+duration+"minutes");
+        BookingId.setText("Order ID : "+bookingId);
+        BookedOn.setText("Booked On "+bookedOn+" for "+duration+" minutes");
 
 
 

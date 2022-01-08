@@ -36,11 +36,6 @@ public class ConsultantProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consultant_profile);
 
-
-        if(ACCOUNT==null) {
-            b_appointment.setText("Login to Book!");
-        }
-
         tv_name = findViewById(R.id.Consultant_Profile_textView_Name);
         iv_profilePic = findViewById(R.id.Consultant_Profile_ImageView_ProfilePic);
         tv_chambers=findViewById(R.id.Consultant_Profile_textView_Chamber);
@@ -52,6 +47,10 @@ public class ConsultantProfile extends AppCompatActivity {
         tv_qualification=findViewById(R.id.Consultant_Profile_textView_Qualification);
         b_appointment = findViewById(R.id.Consultant_Profile_Button_GetAppointment);
 
+
+        if(ACCOUNT==null) {
+            b_appointment.setText("Login to Book!");
+        }
 
         String name = "No name";
         String consultant_id = "Consultant ID missing";

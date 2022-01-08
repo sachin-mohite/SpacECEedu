@@ -67,6 +67,6 @@ dependencies {
 
     implementation 'io.agora.rtc:full-sdk:3.2.1'
 
-    implementation 'com.wdullaer:materialdatetimepicker:3.0.0'
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
 
 }

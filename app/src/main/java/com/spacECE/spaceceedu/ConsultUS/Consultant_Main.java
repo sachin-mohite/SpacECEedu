@@ -73,11 +73,11 @@ public class Consultant_Main extends AppCompatActivity {
         if(MainActivity.ACCOUNT!=null) {
             if (MainActivity.ACCOUNT.isCONSULTANT()) {
                 bottomNav.inflateMenu(R.menu.consultant_main_consultants_bottomnav);
-                generateAppointmentsListForUser(getApplicationContext());
-                generateAppointmentsListForConsultant(getApplicationContext());
+                generateAppointmentsListForUser(getApplicationContext(), MainActivity.ACCOUNT.getAccount_id());
+                generateAppointmentsListForConsultant(getApplicationContext(), MainActivity.ACCOUNT.getAccount_id());
             } else {
                 bottomNav.inflateMenu(R.menu.consultant_main_user_bottomnav);
-                generateAppointmentsListForUser(getApplicationContext());
+                generateAppointmentsListForUser(getApplicationContext(), MainActivity.ACCOUNT.getAccount_id());
             }
         }else {
             bottomNav.inflateMenu(R.menu.consultant_main_nouser_bottomnav);
@@ -90,7 +90,7 @@ public class Consultant_Main extends AppCompatActivity {
                 new Fragment_Consultant_Categories()).commit();
     }
 
-    public static void generateAppointmentsListForUser(Context context) {
+    public static void generateAppointmentsListForUser(Context context, String id) {
 
         new Thread(new Runnable() {
 
@@ -103,7 +103,7 @@ public class Consultant_Main extends AppCompatActivity {
             public void run() {
                 OkHttpClient client = new OkHttpClient();
                 RequestBody fromBody = new FormBody.Builder()
-                        .add("u_id", MainActivity.ACCOUNT.getAccount_id())
+                        .add("u_id", id)
                         .build();
 
                 Request request = new Request.Builder()
@@ -153,7 +153,7 @@ public class Consultant_Main extends AppCompatActivity {
         }).start();
     }
 
-    public static void generateAppointmentsListForConsultant(Context context) {
+    public static void generateAppointmentsListForConsultant(Context context, String id) {
 
         new Thread(new Runnable() {
 
@@ -166,7 +166,7 @@ public class Consultant_Main extends AppCompatActivity {
             public void run() {
                 OkHttpClient client = new OkHttpClient();
                 RequestBody fromBody = new FormBody.Builder()
-                        .add("c_id", MainActivity.ACCOUNT.getAccount_id())
+                        .add("c_id", id)
                         .build();
 
                 Request request = new Request.Builder()

@@ -37,8 +37,9 @@
         <activity
             android:name=".ConsultUS.ConsultUs_SplashScreen"
             android:exported="true" />
-        <activity android:name=".LibForSmall.ChatUS" />
+        <activity android:name=".LibForSmall.Chat_Us" />
         <activity android:name=".VideoLibrary.VideoLibrary_Activity_SplashScreen" />
+        <activity android:name=".LibForSmall.LibForSmall_SplashScreen"/>
         <activity android:name=".LibForSmall.AddBook" />
         <activity android:name=".LearnOnApp.LearnDetailed" />
         <activity android:name=".LearnOnApp.LearnOn_Main" />
@@ -88,10 +89,7 @@
             android:name=".Authentication.LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".LibForSmall.Library_main"
-            android:exported="true" />
-        <activity
-            android:name=".LibForSmall.My_books"
+            android:name=".LibForSmall.Library_Main"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
