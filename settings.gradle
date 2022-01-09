@@ -3,7 +3,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven {
+        mavenCentral {
             url "https://s3-ap-southeast-1.amazonaws.com/godel-release/godel/"
         }
         jcenter() // Warning: this repository is going to shut down soon
