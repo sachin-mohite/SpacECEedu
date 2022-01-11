@@ -73,6 +73,8 @@
             android:name=".ActivityDetailsActivity"
             android:exported="true" />
 
+        <activity android:name=".LibForSmall.libraryDetailed" />
+
         <activity
             android:name=".ConsultUS.ConsultantProfile"
             android:exported="true" />

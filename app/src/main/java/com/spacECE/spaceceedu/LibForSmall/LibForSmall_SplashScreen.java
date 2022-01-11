@@ -74,9 +74,11 @@ public class LibForSmall_SplashScreen extends AppCompatActivity {
                         Log.d("TAG", "run: "+jsonArray.length());
                         for (int i = 0; i < Objects.requireNonNull(jsonArray).length(); i++) {
                             JSONObject response_element = new JSONObject(String.valueOf(jsonArray.getJSONObject(i)));
-                             Book temp = new Book(response_element.getString("product_id"), response_element.getString("product_title"),
-                                    response_element.getString("product_price"), response_element.getString("product_keywords"),
-                                    response_element.getString("product_image"));
+                             Book temp = new Book(response_element.getString("product_id"),response_element.getString("product_title"),
+                                     response_element.getString("product_price"),response_element.getString("product_keywords"),
+                                     response_element.getString("product_image"),response_element.getString("product_desc"),
+                                     response_element.getString("product_brand"), response_element.getString("rent_price"),
+                                     response_element.getString("exchange_price"),response_element.getString("deposit"));
                              Library_Main.list.add(temp);
                         }
                     } catch (JSONException e) {

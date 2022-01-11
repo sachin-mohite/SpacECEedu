@@ -1,12 +1,14 @@
+import org.gradle.api.initialization.resolve.RepositoriesMode
+
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()
         mavenCentral {
             url "https://s3-ap-southeast-1.amazonaws.com/godel-release/godel/"
         }
-        jcenter() // Warning: this repository is going to shut down soon
+        jcenter()
     }
 }
 rootProject.name = "SpacECEedu"

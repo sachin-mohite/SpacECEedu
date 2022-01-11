@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:background="#FFFFFF">
 
-
     <LinearLayout
 
     android:id="@+id/constraintLayout"
@@ -33,12 +32,69 @@
             app:strokeColor="#FF777777"
             app:strokeWidth="1dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="herejhbsdlajbcl"
-            android:id="@+id/temp"
-            />
+
+        <androidx.constraintlayout.motion.widget.MotionLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            app:layoutDescription="@xml/demo_040_carousel_scene">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/news1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/view1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:round="16dp" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/news2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/view2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/news3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:round="16dp" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/news3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/view3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:round="16dp" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/news4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/view4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/news3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:round="16dp" />
+
+            <androidx.constraintlayout.helper.widget.Carousel
+                android:id="@+id/carousel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:carousel_backwardTransition="@+id/backward"
+                app:carousel_firstView="@+id/news2"
+                app:carousel_forwardTransition="@+id/forward"
+                app:carousel_infinite="true"
+                app:carousel_nextState="@+id/next"
+                app:carousel_previousState="@+id/previous"
+                app:constraint_referenced_ids="news1,news2,news3,news4" />
+
+        </androidx.constraintlayout.motion.widget.MotionLayout>
 
         <GridLayout
             android:id="@+id/GridView"

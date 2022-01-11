@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.helper.widget.Carousel;
 import androidx.fragment.app.Fragment;
 
 import com.spacECE.spaceceedu.Authentication.Account;
@@ -44,14 +45,46 @@ public class FragmentMain extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.fragment_main,container,false);
 
+
+        //old
+
         CarouselView carouselView = v.findViewById(R.id.MainFragement_NewsCarousel);
+
         carouselView.setPageCount(mImages.length);
+
         carouselView.setImageListener(new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
                 imageView.setImageResource(mImages [position]);
             }
         });
+
+        //new
+
+        Carousel carousel = v.findViewById(R.id.carousel);
+
+        carousel.setAdapter(new Carousel.Adapter() {
+
+            @Override
+            public int count() {
+                return mImages.length;
+            }
+
+            @Override
+            public void populate(View view, int index) {
+                ((ImageView)view).setImageResource(mImages[index]);
+            }
+
+            @Override
+            public void onNewItem(int index) {
+                carousel.transitionToIndex(index, 2000);
+            }
+
+        });
+
+
+
+
 
         //Navigating to VideoLibrary/Consultation activity via OnClick
         cv_consultation=v.findViewById(R.id.CardView_Consultation);

@@ -123,6 +123,7 @@
         <entry key="app/src/main/res/layout/activity_consultant_registration.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/activity_consultants_library.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/activity_learnon_list_splashscreen.xml" value="0.32083333333333336" />
+        <entry key="app/src/main/res/layout/activity_library_detailed.xml" value="0.15602836879432624" />
         <entry key="app/src/main/res/layout/activity_library_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_login2.xml" value="0.32083333333333336" />
@@ -144,7 +145,7 @@
         <entry key="app/src/main/res/layout/fragment_consultants__my_consultant.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/fragment_consultus_appointments_for_consultant.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/fragment_consultus_appointments_for_user.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_video_library__free.xml" value="0.15833333333333333" />
         <entry key="app/src/main/res/layout/fragment_video_library__premium.xml" value="0.15833333333333333" />
@@ -160,6 +161,8 @@
         <entry key="app/src/main/res/menu/options_main_activity_loggedin.xml" value="0.33541666666666664" />
         <entry key="app/src/main/res/menu/search.xml" value="0.33541666666666664" />
         <entry key="app/src/main/res/menu/videolibrary_bottomoptions.xml" value="0.33541666666666664" />
+        <entry key="app/src/main/res/xml/activity_product_view_3d_scene.xml" value="0.31979166666666664" />
+        <entry key="app/src/main/res/xml/demo_040_carousel_scene.xml" value="0.31979166666666664" />
       </map>
     </option>
   </component>
